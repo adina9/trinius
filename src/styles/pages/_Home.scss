@@ -1,0 +1,347 @@
+.home-container {
+    height: 100vh;
+    width: 100%;
+    z-index: -2;
+    font-family: sans-serif;
+    .choose-country {
+        position: absolute;
+        top: 112px;
+        width: 50vw;
+        height: auto;
+        background-color: $clr5;
+        color: $clr1;
+        align-items: center;
+        padding-left: 4%;
+        height: 45px;
+        box-shadow: 5px 0px 0 #817f7e3d;
+        transition: all 0.4s ease;
+        small {
+            font-size: medium;
+            letter-spacing: 0.3px;
+            &:last-of-type {
+                width: 50%;
+                height: 100%;
+                color: $clr10;
+                font-size: 90%;
+            }
+        }
+        .MuiSvgIcon-root {
+            position: absolute;
+            right: 1.2vh;
+            cursor: pointer;
+        }
+        .countries-div {
+            header {
+                position: fixed;
+                display: flex;
+                justify-content: space-evenly;
+                width: inherit;
+                padding-top: 10%;
+                align-items: center;
+                div {
+                    transition: all 0.4s ease;
+                    transform: translateX(-110vw);
+                    display: flex;
+                    align-items: center;
+                    height: 40px;
+                    width: 50%;
+                    position: fixed;
+                    left: 2vh;
+                    border-radius: 10px;
+                    background-color: #393939;
+                    border: 1px solid white;
+                    &.shown {
+                        transform: translateX(0%);
+                    }
+                    input {
+                        position: absolute;
+                        color: $clr2;
+                        background-color: inherit;
+                        border: none;
+                        font-size: inherit;
+                        width: 90%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        &:focus {
+                            outline: none;
+                        }
+                    }
+                    .MuiSvgIcon-root {
+                        position: absolute;
+                        right: 3%;
+                    }
+                }
+                .p {
+                    transition: all 0.4s ease;
+                    transform: translateX(100vw);
+                    position: fixed;
+                    left: 72vw;
+                    padding-left: 4%;
+                    font-size: 100%;
+                    &.shown {
+                        transform: translateX(0%);
+                    }
+                }
+                .MuiSvgIcon-root:not(:nth-child(2)) {
+                    position: absolute;
+                    transform: translateY(-50vh);
+                    transition: all 0.4s ease;
+                    transition-delay: 1s;
+                    color: $clr1;
+                }
+            }
+            .countries-options {
+                width: 100%;
+                padding-right: 3%;
+                position: fixed;
+                left: 0;
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                grid-auto-rows: minmax(50px, auto);
+                transform: translateX(-100vw);
+                transition: all 1s ease;
+                transition-delay: 1s;
+                height: 150px;
+                overflow-y: overlay;
+                margin-top: 70px;
+                > * {
+                    color: $clr6;
+                    display: flex;
+                    margin-left: 20%;
+                    width: min-content;
+                    align-items: center;
+                    cursor: pointer;
+                    .MuiSvgIcon-root {
+                        text-align: center;
+                        align-items: center;
+                        height: auto;
+                        position: relative;
+                        font-size: large;
+                    }
+                }
+                &.shown {
+                    transform: translateX(0);
+                }
+            }
+        }
+        &.wide {
+            width: 100vw;
+            padding: unset;
+            box-shadow: none;
+            transform: translateX(0%);
+            small,
+            span {
+                display: none;
+            }
+            .countries-div {
+                width: 100vw;
+                height: 0;
+                margin: auto;
+                position: fixed;
+                top: 0%;
+                background-color: $clr5;
+                transition: height 0.5s ease-in-out;
+                &.open {
+                    height: 230px;
+                }
+                header {
+                    .MuiSvgIcon-root:not(:nth-child(2)) {
+                        transform: translateY(0%);
+                        top: 1.5vh;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        &.close {
+            transform: translateX(-100%);
+            .countries-div,
+            .countries-options {
+                display: none;
+            }
+        }
+    }
+    .avatar,
+    .edit-avatar {
+        position: relative;
+        width: 100%;
+        font-size: 25px;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        .MuiSvgIcon-root {
+            font-size: 28px;
+            position: absolute;
+            right: 15vw;
+            top: 26px;
+            color: #3d3d3d;
+            cursor: pointer;
+        }
+    }
+    .avatar {
+        top: 165px;
+    }
+    .edit-name {
+        z-index: 2;
+        width: 50vw;
+        border-radius: 3px;
+        top: 200px;
+        input {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            border: none;
+            border-radius: 2px;
+            background-color: inherit;
+            font-size: large;
+            &:focus {
+                outline: none;
+            }
+        }
+        .MuiSvgIcon-root {
+            position: absolute;
+            left: 105%;
+        }
+    }
+    .image {
+        top: 315px;
+        :first-child {
+            .MuiSvgIcon-root {
+                padding: 5%;
+            }
+        }
+        .MuiSvgIcon-root,
+        .first-letter-avatar {
+            position: absolute;
+            background-color: $clr19;
+            color: $bgClr;
+            width: 30%;
+            height: 30%;
+            border-radius: 50%;
+            padding: 4%;
+            border: 2px solid #151515;
+        }
+        img {
+            background-color: $clr4;
+            border-radius: 50%;
+            border: 7px solid $clr1;
+            box-shadow: 0 0 12px 3px #0000002b;
+        }
+        .chosen-img {
+            width: 140px;
+        }
+        .first-letter-avatar {
+            bottom: 0;
+            right: 0;
+            font-weight: bold;
+            font-size: larger;
+        }
+    }
+    .imgs-section {
+        height: 45vh;
+        position: fixed;
+        right: 0;
+        width: 100%;
+        top: 48vh;
+        grid-template-rows: max-content;
+        transition: all 0.5s ease-in-out;
+        transform: translateY(134%);
+        &.open {
+            transform: translateY(0%);
+        }
+        header {
+            background-color: $clr4;
+            height: 7vh;
+            position: absolute;
+            width: 100%;
+            align-items: center;
+            color: $clr1;
+            letter-spacing: 1px;
+            .MuiSvgIcon-root {
+                position: absolute;
+                right: 3vw;
+                cursor: pointer;
+            }
+        }
+        .options {
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            grid-auto-rows: minmax(115px, auto);
+            margin-top: 12%;
+            background-color: $clr6;
+            overflow-y: overlay;
+            height: inherit;
+            gap: 12px;
+            padding: 12px;
+            position: relative;
+            > * {
+                width: -webkit-fill-available;
+                border: 4px solid $clr1;
+                border-radius: 50%;
+                height: 110px;
+                width: 110px;
+                margin: auto;
+                cursor: pointer;
+                img {
+                    border-radius: 50%;
+                    padding: 8%;
+                    display: flex;
+                    margin: auto;
+                    position: relative;
+                    left: -4px;
+                    width: inherit;
+                }
+            }
+        }
+    }
+    .score-section {
+        margin: inherit;
+        width: 70%;
+        height: 100px;
+        left: 50%;
+        top: 450px;
+        transform: translate(-50%, 0%);
+        transition: opacity 0.5s ease-in-out;
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        padding: 2%;
+        .MuiSvgIcon-root {
+            font-size: 60px;
+            color: #ffa776;
+            border-radius: 50%;
+            box-shadow: 0 0 20px 0px #8080801f;
+        }
+        .score {
+            font-weight: bold;
+            > *:first-of-type {
+                opacity: 0.7;
+            }
+            > *:last-of-type {
+                font-size: larger;
+            }
+        }
+    }
+    .playing {
+        transform: translate(-50%, 0%);
+        width: 70%;
+        height: 55px;
+        top: 650px;
+        left: 50%;
+        border-radius: 10px;
+        border: 2px solid $clr4;
+        padding-top: 4%;
+        font-size: 16px;
+        box-shadow: 0px 5px 2px #f843004d;
+        background-color: $clr4;
+        color: $clr1;
+        font-family: inherit;
+    }
+    .app-about {
+        display: none;
+    }
+}
+@media (min-width: 500px) {
+    .home-container {
+        display: none;
+        .choose-country {
+            display: none;
+        }
+    }
+}

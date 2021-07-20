@@ -1,0 +1,140 @@
+* {
+    &:before,
+    &:after {
+        content: "";
+        position: absolute;
+    }
+}
+.toggle-wrapper {
+    flex: 1 1 calc(100% / 3);
+    overflow: hidden;
+    .toggle {
+        display: inline-block;
+        input {
+            height: 40px;
+            left: 0;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            width: 40px;
+        }
+        .check {
+            border-radius: 50%;
+            width: 2em;
+            height: 2em;
+            position: absolute;
+            left: 58%;
+            top: 6%;
+            transition: 0.4s ease;
+            transform: rotate(360deg);
+            background: $clr17;
+            label.toggle-item {
+                background-color: $clr21;
+            }
+            &:before,
+            &:after {
+                height: 3px;
+                background-color: $clr1;
+            }
+            &:before {
+                width: 15px;
+                transform: rotate(-45deg) translate(-3px, 19px);
+            }
+            &:after {
+                width: 7px;
+                transform: rotate(45deg) translate(17px, 6px);
+            }
+        }
+        .uncheck {
+            border-radius: 50%;
+            width: 2em;
+            height: 2em;
+            position: absolute;
+            background-color: $clr16;
+            transition: 0.4s ease;
+            top: 6%;
+            left: 3%;
+            &:before,
+            &:after {
+                border-radius: 10px;
+                background: $clr1;
+                height: 3px;
+                transition: 0.4s ease;
+            }
+            &:before {
+                width: 15px;
+                transform: rotate(-45deg) translate(-4px, 16px);
+            }
+            &:after {
+                width: 15px;
+                transform: rotate(45deg) translate(16px, 4px);
+            }
+        }
+        label.toggle-item {
+            width: 5.3em;
+            background-color: $clr21;
+            height: 2.3em;
+            display: inline-block;
+            left: 43%;
+            border-radius: 50px;
+            position: relative;
+            transition: all 0.3s ease;
+            transform-origin: 20% center;
+            cursor: pointer;
+            &:before {
+                display: block;
+                transition: all 0.2s ease;
+                width: 2.3em;
+                height: 2.3em;
+                top: 0.25em;
+                left: 0.25em;
+                border-radius: 2em;
+                transition: 0.3s ease;
+            }
+        }
+    }
+}
+@media (min-width: 500px) {
+    .toggle-wrapper {
+        margin-right: -5%;
+        .toggle {
+            .uncheck {
+                background: $clr8;
+            }
+        }
+    }
+    @media (max-height: 800px) {
+        .toggle-wrapper {
+            right: 15px;
+            .toggle {
+                label.toggle-item {
+                    height: 2em;
+                    .uncheck,
+                    .check {
+                        height: 1.8em;
+                        width: 1.8em;
+                        top: 5%;
+                    }
+                    .check {
+                        left: 63%;
+                        &:before {
+                            transform: rotate(-45deg) translate(-3px, 17px);
+                        }
+                        &:after {
+                            transform: rotate(45deg) translate(16px, 6px);
+                        }
+                    }
+                    .uncheck {
+                        left: 3%;
+                        &:before {
+                            transform: rotate(-45deg) translate(-4px, 14px);
+                        }
+                        &:after {
+                            transform: rotate(45deg) translate(14px, 4px);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

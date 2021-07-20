@@ -1,0 +1,16 @@
+.timeCmp {
+    .bless {
+        width: 65%;
+        top: 15%;
+    }
+}
+@media (min-width: 500px) {
+    .timeCmp {
+        .bless {
+            width: 80%;
+        }
+        img {
+            left: 63%;
+        }
+    }
+}

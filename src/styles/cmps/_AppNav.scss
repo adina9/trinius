@@ -1,0 +1,23 @@
+nav {
+    background-color: #b4b4b4;
+    height: 50px;
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    z-index: -1;
+    ul {
+        margin: 1vh;
+        padding-inline-start: 0;
+        li {
+            .MuiSvgIcon-root {
+                font-size: 35px;
+                color: $clr1;
+            }
+        }
+    }
+}
+@media (min-width: 500px) {
+    nav{
+      display: none;
+    }
+}

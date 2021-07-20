@@ -1,0 +1,14 @@
+.roundCmp {
+    img {
+        top: 30%;
+        left: 13%;
+        transform: rotate(10deg);
+    }
+}
+@media (min-width: 500px) {
+    .roundCmp img {
+        left: 67%;
+        top: unset;
+        transform: rotate(0);
+    }
+}

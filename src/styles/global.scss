@@ -1,0 +1,30 @@
+// Setup
+@import "./setup/variables.scss";
+@import "./setup/typography.scss";
+
+// Basics
+@import "./basics/helpers.scss";
+@import "./basics/base.scss";
+
+// Pages
+@import "./pages/Home.scss";
+@import "./pages/About.scss";
+@import "./pages/SignUp";
+@import "./pages/Settings";
+@import "./pages/Playing";
+@import "./pages/Adding";
+@import "./pages/Dashboard";
+@import "./pages/AboutMe";
+
+// Components
+@import "./cmps/Category";
+@import "./cmps/AppHeader";
+@import "./cmps/AppNav";
+@import "./cmps/RoundIsFinished";
+@import "./cmps/FinishCmpChild";
+@import "./cmps/RoundCmpChild";
+@import "./cmps/TimeCmpChild";
+@import "./cmps/ToggleWrapper";
+@import "./cmps/StatCmp";
+@import "./cmps/StatModal";
+@import "./cmps/LoadCycle";

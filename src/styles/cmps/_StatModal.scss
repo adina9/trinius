@@ -1,0 +1,60 @@
+.stat-modal {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    background-color: $bgClr;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    height: 80%;
+    padding: 8%;
+    border-radius: 1%;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    z-index: -1;
+    &.show {
+        z-index: 1;
+        opacity: 1;
+    }
+    > * {
+        position: absolute;
+    }
+    canvas {
+        top: 30%;
+    }
+    .MuiSvgIcon-root {
+        top: 5%;
+        right: 5%;
+        cursor: pointer;
+    }
+    p {
+        position: absolute;
+        left: 50%;
+        bottom: 4%;
+        transform: translateX(-50%);
+        text-align: center;
+        width: 60%;
+    }
+}
+@media (min-width: 500px) {
+    .stat-modal {
+        width: 75%;
+        height: 90%;
+        top: 30%;
+        background-color: $bgClr;
+        canvas {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        p {
+            bottom: 5%;
+        }
+        .MuiSvgIcon-root {
+            left: 3%;
+        }
+        div{
+            top: 5%;
+            left: 3%;
+        }
+    }
+}

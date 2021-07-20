@@ -1,0 +1,177 @@
+.app-about {
+    top: 57vh;
+    background-color: $clr6;
+    color: $clr19;
+    width: 82vw;
+    height: 70vh;
+    animation: drop 1s ease;
+    padding: 2vh 5vh;
+    border-radius: 4px;
+    box-shadow: 11px -7px 0px #f8430026;
+    line-height: 7vw;
+    letter-spacing: 0.4px;
+    z-index: -1;
+    font-size: 2.5vh;
+    header {
+        p {
+            text-align: center;
+            font-size: large;
+            color: #fff1e2;
+            margin-top: 2vh;
+        }
+        small {
+            position: absolute;
+            top: 8vh;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 100%;
+            letter-spacing: 0.3px;
+            font-size: smaller;
+        }
+    }
+    div {
+        margin-top: 12vw;
+        text-align: center;
+    }
+    footer {
+        text-align: center;
+    }
+    footer:last-child {
+        background-color: $bgClr;
+        height: 6vh;
+        width: 60%;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        margin: 0 auto;
+        box-shadow: 0px 5px 0px #4040401f;
+        border-radius: 2px;
+        padding: 0.5vh;
+        position: relative;
+        bottom: 2%;
+        a {
+            &:last-child {
+                display: none;
+            }
+        }
+    }
+    @keyframes drop {
+        0% {
+            opacity: 0;
+            left: -50%;
+        }
+        70% {
+            left: 65%;
+        }
+        100% {
+            left: 50%;
+            opacity: 1;
+        }
+    }
+}
+@media (min-width: 500px) {
+    .app-about {
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: $clr26;
+        color: $bgClr;
+        letter-spacing: 0.2vh;
+        width: 60vw;
+        left: 40vw;
+        top: 50vh;
+        height: 85vh;
+        transform: translate(-20vw, -50%);
+        line-height: 5vh;
+        box-shadow: 11px -13px 4px 0px #1515150d;
+        header {
+            p {
+                text-align: center;
+                font-size: larger;
+                color: $clr4;
+                font-weight: bold;
+                position: absolute;
+                left: 52%;
+                transform: translateX(-50%);
+                letter-spacing: 2vh;
+                top: 0;
+                width: 100%;
+            }
+            small {
+                color: $clr4;
+                top: 10%;
+                letter-spacing: 0.5vh;
+                left: 51%;
+            }
+        }
+        div {
+            margin-top: 22vh;
+            font-size: 1.5vw;
+            color: $clr21;
+            width: 75%;
+            left: 50%;
+            transform: translateX(-50%);
+            position: absolute;
+        }
+        footer {
+            bottom: 10vh;
+            left: 50%;
+            transform: translateX(-50%);
+            position: absolute;
+            &:first-of-type {
+                p {
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    color: $clr4;
+                    font-size: xx-large;
+                    width: 25vh;
+                    bottom: 10vh;
+                }
+            }
+            &:last-child {
+                border: unset;
+                position: absolute;
+                height: 6vh;
+                bottom: 80px;
+                width: 30%;
+                background-color: unset;
+                cursor: pointer;
+                box-shadow: 0px 5px 0px 0px #2f2f2f1f;
+                border-radius: 5px;
+                a {
+                    position: absolute;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    &:first-child {
+                        display: none;
+                    }
+                    &:last-child {
+                        display: flex;
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        background-color: $clr19;
+                        color: $clr21;
+                        border-radius: 5px;
+                    }
+                }
+            }
+        }
+    }
+    @keyframes drop {
+        0% {
+            opacity: 0;
+            left: 130vw;
+        }
+        70% {
+            left: 25vw;
+        }
+        100% {
+            left: 40vw;
+            opacity: 1;
+        }
+    }
+}

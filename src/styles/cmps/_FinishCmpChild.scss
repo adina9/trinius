@@ -1,0 +1,16 @@
+.finishCmp {
+    img {
+        top: 35%;
+        left: 2%;
+        transform: rotate(12deg);
+    }
+}
+@media (min-width: 500px) {
+    .finishCmp {
+        img {
+            top: unset;
+            right: -4%;
+            left: unset;
+        }
+    }
+}

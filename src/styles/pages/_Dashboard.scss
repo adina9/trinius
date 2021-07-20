@@ -1,0 +1,95 @@
+.dashboard {
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    top: 15vh;
+    background-color: $bgClr;
+    .total-points {
+        width: 90%;
+        height: 20%;
+        > * {
+            text-align: center;
+            width: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+        }
+        header p {
+            text-transform: capitalize;
+            margin: 5%;
+            font-size: x-large;
+            color: $clr19;
+        }
+        .progress-container {
+            width: 80%;
+            height: 10vh;
+            background-color: $clr22;
+            top: 15vh;
+            border-radius: 5vh;
+            padding: 3%;
+            p {
+                display: flex;
+                justify-content: space-evenly;
+                width: 45%;
+                font-size: large;
+                text-shadow: 0px 0px 20px #ffbfab;
+                color: black;
+                position: absolute;
+                right: 7%;
+            }
+            .percent {
+                background-color: $clr6;
+                border-radius: 5vh;
+                z-index: -1;
+                left: 4.7%;
+            }
+        }
+        @keyframes progressSmall {
+            0% {
+                width: 0%;
+                height: 0%;
+            }
+        }
+        @keyframes progressBig {
+            0% {
+                width: 10%;
+            }
+        }
+    }
+}
+@media (min-width: 500px) {
+    .dashboard {
+        width: 60vw;
+        top: 50%;
+        left: 50vw;
+        height: 90%;
+        transform: translate(-50%, -50%);
+        .total-points {
+            header p {
+                margin: 2%;
+            }
+            .progress-container {
+                background-color: $bgClr;
+                box-shadow: inset 0px 0px 20px 0px #80808080;
+                width: 86%;
+                align-items: center;
+                justify-content: center;
+                display: flex;
+                height: 6vh;
+                border-radius: 1vh;
+                p {
+                    text-shadow: 0px 0px 5px $clr1;
+                    margin: unset;
+                    right: 4%;
+                    width: 16vh;
+                }
+                .percent {
+                    background-color: $clr4;
+                    border-radius: 0.8vh;
+                    left: 2%;
+                    box-shadow: inset 0 0 20px 0px #00000033;
+                }
+            }
+        }
+    }
+}
