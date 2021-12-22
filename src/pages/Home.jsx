@@ -130,7 +130,7 @@ class _Home extends Component {
             currImg: image,
             currUser
         })
-        setTimeout(() => this.setState({ isLoadingImage: false }), 500)
+        setTimeout(() => this.setState({ isLoadingImage: false }), 200)
     }
 
     importAll = (requires) => {
