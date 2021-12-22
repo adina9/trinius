@@ -163,7 +163,7 @@
             position: absolute;
             left: 50%;
             top: 94%;
-            transform: translate(-50%, -50%);
+            @include trans;
             div {
                 background-color: #ff7629;
                 box-shadow: 0px 7px 0 $clr9;
@@ -262,7 +262,7 @@
         }
 
         .signs-options {
-            transform: translate(-50%, -50%);
+            @include trans;
             :first-child {
                 color: $clr4;
                 height: 20vh;

@@ -245,7 +245,7 @@
             height: 70%;
             align-items: flex-end;
             color: black;
-           
+
             small {
                 font-size: initial;
             }
@@ -290,16 +290,20 @@
                     position: absolute;
                     left: 52%;
                     top: 50%;
-                    transform: translate(-50%, -50%);
+                    @include trans;
                     font-size: xxx-large;
                     animation: well 0.7s ease;
                 }
                 @keyframes well {
                     0% {
-                        transform: translate(-50%, -50%) scale(0);
+                        @include trans {
+                            transform: scale(0);
+                        }
                     }
                     100% {
-                        transform: translate(-50%, -50%) scale(1);
+                        @include trans {
+                            transform: scale(1);
+                        }
                     }
                 }
             }

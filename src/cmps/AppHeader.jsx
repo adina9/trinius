@@ -1,6 +1,6 @@
-import React, {  useEffect, useState } from 'react'
-import { connect } from 'react-redux'
-import { NavLink, withRouter } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 
 //cmps:
 import { Settings } from '../pages/Settings'
@@ -26,10 +26,12 @@ import { logout } from '../store/actions/userAction.js'
 import { loadData } from '../store/actions/dataAction'
 import { storageService } from '../services/session-storage'
 
+const menuOptions = [{ txt: 'home', to: 'home' }, { txt: 'adding', to: 'adding' }, { txt: 'dashboard', to: 'dashboard' }, { txt: 'settings', to: 'settings' }, { txt: 'about', to: 'about' }, { txt: 'about me', to: 'me' }]
 
-const _AppHeader = ({ data, history, logout, loadData }) => {
+export const AppHeader = ({ history }) => {
 
-    const menuOptions= [{ txt: 'home', to: 'home' }, { txt: 'adding', to: 'adding' }, { txt: 'dashboard', to: 'dashboard' }, { txt: 'settings', to: 'settings' }, { txt: 'about', to: 'about' }, { txt: 'about me', to: 'me' }]
+    const { data } = useSelector(state => state.dataModule)
+    const dispatch = useDispatch()
 
     const [currUser, setCurrUser] = useState({})
     const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -45,7 +47,7 @@ const _AppHeader = ({ data, history, logout, loadData }) => {
     }
 
     useEffect(async () => {
-        await loadData()
+        await dispatch(loadData())
         const user = storageService.load('currUser')
         if (!user?.nickname) history.push("/")
         setCurrUser({ ...user })
@@ -67,7 +69,7 @@ const _AppHeader = ({ data, history, logout, loadData }) => {
                         {navOps.map((o, idx) => <NavLink to={`/${o.to}`} exact={true} activeClassName="active-link" key={idx}>{o.txt}</NavLink>)}
                         <p id={`${isSettingsOpen ? 'settings' : ''}`} onClick={() => setIsSettingsOpen(!isSettingsOpen)}>{isEn ? 'Settings' : 'הגדרות'}<span><SettingsIcon /></span></p>
                         <p style={{ width: '100%' }} onClick={() => setIsAboutMeOpen(!isAboutMeOpen)}>{isEn ? 'About Me' : 'מי אני'}<span><InfoIcon /></span></p>
-                        <Logout logout={logout} data={data} history={history} />
+                        <Logout logout={dispatch(logout)} data={data} history={history} />
                     </div>
                     <MenuIcon id={`${className ? 'menu-icon' : ''}`} className="menu-icon pa" onClick={() => setClassName(!className)} alt="" />
 
@@ -123,14 +125,3 @@ const _AppHeader = ({ data, history, logout, loadData }) => {
         </React.Fragment >
     )
 }
-
-const mapStateToProps = state => {
-    return {
-        data: state.dataModule.data
-    }
-}
-const mapDispatchToProps = {
-    loadData,
-    logout
-}
-export const AppHeader = withRouter(connect(mapStateToProps, mapDispatchToProps)(_AppHeader));

@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
-// import { Link } from 'react-router-dom'
-import { Howl, Howler } from 'howler';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import { Howl } from 'howler';
 import i18n from "../services/i18next";
-import translate from "translate";
 
 //components:
 import { Category } from '../cmps/Category';
@@ -66,310 +64,290 @@ import s11 from '../music/songs/11.mp3'
 import s12 from '../music/songs/12.mp3'
 
 
+const tunes = [
+    {
+        title: 'covers',
+        tunes: [
+            { s: p01, n: 'Art of silence', isPlaying: false },
+            { s: p02, n: 'friends - aura dione', isPlaying: false },
+            { s: p03, n: 'bach - aria variata', isPlaying: false },
+            { s: p04, n: 'the shadow of your smile', isPlaying: false },
+            { s: p05, n: 'believer', isPlaying: false },
+            { s: p06, n: 'everyone - monplaisir', isPlaying: false },
+            { s: p07, n: 'attention - charlie puth', isPlaying: false },
+            { s: p08, n: 'don\'t stop me now - queen', isPlaying: false },
+            { s: p09, n: 'chandelier - sia', isPlaying: false },
+            { s: p10, n: 'how long - charlie puth', isPlaying: false },
+            { s: p11, n: 'demons - imagine dragons', isPlaying: false },
+            { s: p12, n: 'despacito', isPlaying: false },
+            { s: p13, n: 'shape of you', isPlaying: false },
+            { s: p14, n: 'the hills - the weekend', isPlaying: false },
+            { s: p15, n: 'dance monkey - tones and i', isPlaying: false },
+            { s: p16, n: 'in dreams - scott buckley', isPlaying: false },
+            { s: p17, n: 'can\'t stop my feet', isPlaying: false },
+            { s: p18, n: 'empowered ending', isPlaying: false },
+            { s: p19, n: 'atmosphere', isPlaying: false },
+        ]
+    },
+    {
+        title: 'songs',
+        tunes: [
+            { s: s01, n: 'faded - alan walker', isPlaying: false },
+            { s: s02, n: 'thank u, next - ariana grande', isPlaying: false },
+            { s: s03, n: 'hallo - beyonce', isPlaying: false },
+            { s: s04, n: 'bad guy - biilie eilish', isPlaying: false },
+            { s: s05, n: 'lovely - billie eilish', isPlaying: false },
+            { s: s06, n: 'my heart will go on - celine dion', isPlaying: false },
+            { s: s07, n: 'perfect - ed sheeran', isPlaying: false },
+            { s: s08, n: 'photograph - ed sheeran', isPlaying: false },
+            { s: s09, n: 'story of my life - one direction', isPlaying: false },
+            { s: s10, n: 'what makes you beautiful - one direction', isPlaying: false },
+            { s: s11, n: 'you & i - one direction', isPlaying: false },
+            { s: s12, n: 'fade - tony tucker', isPlaying: false },
+        ]
+    }
+]
 var music = {
     overworld: new Howl({
         src: [p01]
     })
 }
+const levels = [
+    { n: 'E', c: '#ff9800' },
+    { n: 'M', c: '#FF5733' },
+    { n: 'H', c: '#E92337' }
+]
+const timeOps = [60, 90, 120, 240]
+const languages = ['English', 'עברית']
 
-class _Settings extends Component {
+export const Settings = ({ history, children, isOnDesktop }) => {
 
-    state = {
-        currUser: {},
-        currLang: '',
-        currCountry: '',
-        isSoundOn: false,
-        selectedSound: null,
-        languages: ['English', 'עברית'],
-        isTimeLevelOn: false,
-        timeOps: [60, 90, 120, 240],
-        selectedTime: null,
-        isCategoryOpen: false,
-        levels: [
-            { n: 'E', c: '#ff9800' },
-            { n: 'M', c: '#FF5733' },
-            { n: 'H', c: '#E92337' }
-        ],
-        selectedLevel: null,
-        useQStatus: '',
-        tunesArr: [
-            {
-                title: 'covers',
-                tunes: [
-                    { s: p01, n: 'Art of silence', isPlaying: false },
-                    { s: p02, n: 'friends - aura dione', isPlaying: false },
-                    { s: p03, n: 'bach - aria variata', isPlaying: false },
-                    { s: p04, n: 'the shadow of your smile', isPlaying: false },
-                    { s: p05, n: 'believer', isPlaying: false },
-                    { s: p06, n: 'everyone - monplaisir', isPlaying: false },
-                    { s: p07, n: 'attention - charlie puth', isPlaying: false },
-                    { s: p08, n: 'don\'t stop me now - queen', isPlaying: false },
-                    { s: p09, n: 'chandelier - sia', isPlaying: false },
-                    { s: p10, n: 'how long - charlie puth', isPlaying: false },
-                    { s: p11, n: 'demons - imagine dragons', isPlaying: false },
-                    { s: p12, n: 'despacito', isPlaying: false },
-                    { s: p13, n: 'shape of you', isPlaying: false },
-                    { s: p14, n: 'the hills - the weekend', isPlaying: false },
-                    { s: p15, n: 'dance monkey - tones and i', isPlaying: false },
-                    { s: p16, n: 'in dreams - scott buckley', isPlaying: false },
-                    { s: p17, n: 'can\'t stop my feet', isPlaying: false },
-                    { s: p18, n: 'empowered ending', isPlaying: false },
-                    { s: p19, n: 'atmosphere', isPlaying: false },
-                ]
-            },
-            {
-                title: 'songs',
-                tunes: [
-                    { s: s01, n: 'faded - alan walker', isPlaying: false },
-                    { s: s02, n: 'thank u, next - ariana grande', isPlaying: false },
-                    { s: s03, n: 'hallo - beyonce', isPlaying: false },
-                    { s: s04, n: 'bad guy - biilie eilish', isPlaying: false },
-                    { s: s05, n: 'lovely - billie eilish', isPlaying: false },
-                    { s: s06, n: 'my heart will go on - celine dion', isPlaying: false },
-                    { s: s07, n: 'perfect - ed sheeran', isPlaying: false },
-                    { s: s08, n: 'photograph - ed sheeran', isPlaying: false },
-                    { s: s09, n: 'story of my life - one direction', isPlaying: false },
-                    { s: s10, n: 'what makes you beautiful - one direction', isPlaying: false },
-                    { s: s11, n: 'you & i - one direction', isPlaying: false },
-                    { s: s12, n: 'fade - tony tucker', isPlaying: false },
-                ]
-            }
-        ]
-    }
+    const { data } = useSelector(state => state.dataModule)
+    const dispatch = useDispatch()
 
 
-    async componentDidMount() {
+    const [currUser, setCurrUser] = useState({})
+    const [isSoundOn, setIsSoundOn] = useState(false)
+    const [useQStatus, setUseQStatus] = useState('')
+    const [isTimeLevelOn, setIsTimeLevelOn] = useState(false)
+    const [selectedTime, setSelectedTime] = useState(null)
+    const [currCountry, setCurrCountry] = useState('')
+    const [currLang, setCurrLang] = useState('')
+    const [selectedSound, setSelectedSound] = useState(null)
+    const [category, setCategory] = useState(null)
+    const [lang, setLang] = useState(null)
+    const [selectedLevel, setSelectedLevel] = useState(null)
+    const [isCategoryOpen, setIsCategoryOpen] = useState(false)
+    const [tunesArr, setTunesArr] = useState(tunes)
 
-        const { data, history, isOnDesktop } = this.props
-        await this.props.loadData()
+    var lngs = gameService.setSettLngs()
+
+    useEffect(() => {
+        setLang(currUser?.game?.lang)
+        setCategory(currUser?.game?.category)
+    }, [currUser])
+
+    useEffect(async () => {
         const currUser = storageService.load('currUser')
+        await dispatch(loadData())
+
+        if (!currUser) return
         const { soundObj, timeObj, lang, level, useQ, country } = currUser?.game
+
         if (!currUser?.nickname) history?.push("/")
 
-        this.setState({
-            isSoundOn: soundObj?.soundStatus,
-            useQStatus: useQ,
-            isTimeLevelOn: timeObj?.timeStatus,
-            currCountry: country,
-            currLang: lang,
-            currUser: { ...currUser }
-        })
-        if (!country) await this.props.updateCountry(data, currUser, lang === 'English' ? 'Brazil' : 'ברזיל')
+        setIsSoundOn(soundObj?.soundStatus)
+        setUseQStatus(useQ)
+        setIsTimeLevelOn(timeObj?.timeStatus)
+        setCurrCountry(country)
+        setCurrLang(lang)
+        setCurrUser({ ...currUser })
+
+        if (!country) await dispatch(updateCountry(data, currUser, lang === 'English' ? 'Brazil' : 'ברזיל'))
 
         if (!soundObj?.soundStatus) {
-            this.setState({ isSoundOn: false, selectedSound: this.state.tunesArr[0].tunes[0] })
-            await this.props.updateSound(data, currUser, this.state.tunesArr[0].tunes[0])
-            await this.props.updateSoundStatus(data, currUser, this.state.isSoundOn)
-        } else this.setState({ selectedSound: soundObj.sound })
+            setIsSoundOn(false)
+            setSelectedSound(tunesArr[0].tunes[0])
+            await dispatch(updateSound(data, currUser, tunesArr[0].tunes[0]))
+            await dispatch(updateSoundStatus(data, currUser, isSoundOn))
+        } else setSelectedSound(soundObj.sound)
 
         if (!timeObj?.time) {
-            this.setState({ isTimeLevelOn: false, selectedTime: 60 })
-            await this.props.updateTime(data, currUser, 60)
-            await this.props.updateTimeStatus(data, currUser, this.state.isTimeLevelOn)
-        } else this.setState({ selectedTime: timeObj.time })
+            setIsTimeLevelOn(false)
+            setSelectedTime(60)
+            await dispatch(updateTime(data, currUser, 60))
+            await dispatch(updateTimeStatus(data, currUser, isTimeLevelOn))
+        } else setSelectedTime(timeObj.time)
 
         if (!level) {
-            this.setState({ selectedLevel: Object.values(this.state.levels)[0] })
-            await this.props.updateLevel(data, currUser, this.state.selectedLevel)
-        } else this.setState({ selectedLevel: level })
+            setSelectedLevel(Object.values(levels)[0])
+            await dispatch(dispatch(updateLevel(data, currUser, selectedLevel)))
+        } else setSelectedLevel(level)
 
-    }
+        return () => {
+            music.overworld.stop()
+            falseAll()
+        }
+    }, [])
 
-    onUpdateLang = async ({ target }) => {
-        const { currLang, currUser } = this.state
-        if (this.state.currLang === target.value) return
+    const onUpdateLang = async ({ target }) => {
+        if (currLang === target.value) return
         else {
             i18n.changeLanguage(this.lngForChange(target.value))
-            const { data } = this.props
             const { country, lang } = currUser?.game
-
-            this.setState({ currLang: target.value }, async () => {
+            setCurrLang(target.value, async () => {
                 var currC = gameService.tranCountry(target.value, country)
-                await this.props.updateLang(data, currUser, this.state.currLang, currC)
+                await dispatch(updateLang(data, currUser, currLang, currC))
             })
         }
     }
+    const lngForChange = (lng) => lng === 'English' ? 'en' : 'he'
+    const onCloseCategory = () => setIsCategoryOpen(false)
 
-
-    lngForChange = (lng) => lng === 'English' ? 'en' : 'he'
-
-    onCloseCategory = () => this.setState({ isCategoryOpen: false })
-
-    onUpdate = async (key, value) => {
-        const { data, updateSoundStatus, updateSound, updateTimeStatus, updateTime, updateLevel, updateUseQStatus } = this.props
+    const onUpdate = async (key, value) => {
         const currUser = storageService.load('currUser')
         switch (key) {
             case 'soundStatus':
-                this.setState({ isSoundOn: value })
-                await updateSoundStatus(data, currUser, value)
+                setIsSoundOn(value)
+                await dispatch(updateSoundStatus(data, currUser, value))
                 break
             case 'sound':
-                this.setState({ selectedSound: value })
-                await updateSound(data, currUser, value)
+                setSelectedSound(value)
+                await dispatch(updateSound(data, currUser, value))
                 break
             case 'timeStatus':
-                this.setState({ isTimeLevelOn: value })
-                await updateTimeStatus(data, currUser, value)
+                setIsTimeLevelOn(value)
+                await dispatch(updateTimeStatus(data, currUser, value))
                 break
             case 'time':
-                this.setState({ selectedTime: value })
-                await updateTime(data, currUser, value)
+                setSelectedTime(value)
+                await dispatch(updateTime(data, currUser, value))
                 break
             case 'level':
-                this.setState({ selectedLevel: { ...value } })
-                await updateLevel(data, currUser, value)
+                setSelectedLevel({ ...value })
+                await dispatch(updateLevel(data, currUser, value))
                 break
             case 'useQ':
-                this.setState({ useQStatus: value })
-                await updateUseQStatus(data, currUser, value)
+                setUseQStatus(value)
+                await dispatch(updateUseQStatus(data, currUser, value))
                 break
             default:
                 break;
         }
     }
-
-    soundPlay = (ev, src, value) => {
+    const soundPlay = (ev, src, value) => {
         ev.stopPropagation()
         music.overworld.stop()
-        this.checkCurrSound(src, value)
+        checkCurrSound(src, value)
         music = { overworld: new Howl({ src }) }
         if (!music.overworld.playing()) music.overworld.play()
     }
-
-    checkCurrSound = (src, value) => {
-        var fullTunesArr = this.falseAll()
+    const checkCurrSound = (src, value) => {
+        var fullTunesArr = falseAll()
         fullTunesArr.forEach(arr => arr.tunes.forEach(currSound => {
             if (currSound.s === src) currSound.isPlaying = value
         }))
-        this.setState({ tunesArr: fullTunesArr })
+        setTunesArr(fullTunesArr)
     }
-
-    falseAll = () => {
-        var fullTunesArr = this.state.tunesArr.slice()
+    const falseAll = () => {
+        var fullTunesArr = tunesArr.slice()
         fullTunesArr.forEach(arr => arr.tunes.forEach(t => t.isPlaying = false))
+        console.log('fullTunesArr', fullTunesArr);
         return fullTunesArr
     }
-
-    soundStop = (ev, src, value) => {
+    const soundStop = (ev, src, value) => {
         ev.stopPropagation()
-        this.checkCurrSound(src, value)
+        checkCurrSound(src, value)
         music.overworld.stop()
     }
+ 
+    return (
+        <React.Fragment>
+            <section className="settings left-trans">
+                <span className="span-children">{children}</span>
 
-    componentWillUnmount() {
-        music.overworld.stop()
-        this.falseAll()
-    }
-
-    render() {
-        const { currUser, currLang, languages, isTimeLevelOn, isSoundOn, tunesArr, selectedSound, timeOps, selectedTime, isCategoryOpen, levels, selectedLevel, useQStatus } = this.state
-        const { data, isOnDesktop, children, history, logout } = this.props
-        const user = storageService.load('currUser')
-        const { category, lang } = user.game
-        var lngs = gameService.setSettLngs()
-        return (
-            <React.Fragment>
-                <section className="settings left-trans">
-                    <span className="span-children">{children}</span>
-
-                    <div className="categories">
-                        <div>
-                            <span><ClassIcon /></span>
-                            <p>{lngs["sett-c"][this.lngForChange(currLang)]}</p>
-                        </div>
-                        <div className="to-category flex j-evenly a-center">
-                            <p className="pa a-center flex ttc">{category?.name ? gameService.getCForDisplay(true, lang, category?.name) : <SignalCellularNoSimOutlinedIcon />}</p>
-                            <DoubleArrowRoundedIcon onClick={() => this.setState({ isCategoryOpen: true })} />
-                        </div>
+                <div className="categories">
+                    <div>
+                        <span><ClassIcon /></span>
+                        <p>{lngs["sett-c"][lngForChange(currLang)]}</p>
                     </div>
-                    <div className="levels">
+                    <div className="to-category flex j-evenly a-center">
+                        <p className="pa a-center flex ttc">{category?.name ? gameService.getCForDisplay(true, lang, category?.name) : <SignalCellularNoSimOutlinedIcon />}</p>
+                        <DoubleArrowRoundedIcon onClick={() => setIsCategoryOpen(true)} />
+                    </div>
+                </div>
+                <div className="levels">
+                    <div>
+                        <span><BarChartRoundedIcon /></span>
+                        <p>{lngs["sett-l"][lngForChange(currLang)]}</p>
+                    </div>
+                    <div className="level-select flex j-between">
+                        {levels.map((l, idx) => <div key={idx} onClick={() => onUpdate('level', l)} style={{ border: selectedLevel?.n === l.n && !isOnDesktop ? '2px solid black' : '', backgroundColor: l.c }}>
+                            <p style={{ color: selectedLevel?.n === l.n ? 'black' : 'white' }}>{l.n}</p>
+                        </div>)}
+                    </div>
+                </div>
+
+                <div style={{ marginBottom: isSoundOn ? 0 : '3%', borderRadius: isSoundOn ? '5px 5px 0 0' : '5px' }}>
+                    <div>
+                        <span><VolumeUpRoundedIcon /></span>
+                        <p>{lngs["sett-s"][lngForChange(currLang)]}</p>
+                    </div>
+                    <ToggleWrapper obj={{ value: isSoundOn, key: 'soundStatus' }} onUpdate={onUpdate} />
+                </div>
+                <div className={`sound-select ${isSoundOn ? 'open' : ''}`}>
+                    <p className="selected-sound pa tas ma">{selectedSound?.n}</p>
+                    {tunesArr.map((arr, idx) => <div key={idx}>
+                        <p className="piano-p tac">{lngs[`sett-p-${arr.title}`][lngForChange(currLang)]}</p>
                         <div>
-                            <span><BarChartRoundedIcon /></span>
-                            <p>{lngs["sett-l"][this.lngForChange(currLang)]}</p>
-                        </div>
-                        <div className="level-select flex j-between">
-                            {levels.map((l, idx) => <div key={idx} onClick={() => this.onUpdate('level', l)} style={{ border: selectedLevel?.n === l.n && !isOnDesktop ? '2px solid black' : '', backgroundColor: l.c }}>
-                                <p style={{ color: selectedLevel?.n === l.n ? 'black' : 'white' }}>{l.n}</p>
+                            {arr.tunes.map((p, idx) => <div className="tune" key={idx} onClick={() => onUpdate('sound', p)} style={{ backgroundColor: selectedSound?.n === p.n ? '#ff9800' : '#e8eaed' }}>
+                                {!p.isPlaying && <PlayCircleOutlineIcon onClick={(ev) => soundPlay(ev, p.s, true)} />}
+                                {p.isPlaying && <PauseCircleOutlineIcon onClick={(ev) => soundStop(ev, p.s, false)} />}
+                                <p>{p.n}</p>
                             </div>)}
                         </div>
-                    </div>
+                    </div>)}
+                </div>
 
-                    <div style={{ marginBottom: isSoundOn ? 0 : '3%', borderRadius: isSoundOn ? '5px 5px 0 0' : '5px' }}>
-                        <div>
-                            <span><VolumeUpRoundedIcon /></span>
-                            <p>{lngs["sett-s"][this.lngForChange(currLang)]}</p>
-                        </div>
-                        <ToggleWrapper obj={{ value: isSoundOn, key: 'soundStatus' }} onUpdate={this.onUpdate} />
-                    </div>
-                    <div className={`sound-select ${isSoundOn ? 'open' : ''}`}>
-                        <p className="selected-sound pa tas ma">{selectedSound?.n}</p>
-                        {tunesArr.map((arr, idx) => <div key={idx}>
-                            <p className="piano-p tac">{lngs[`sett-p-${arr.title}`][this.lngForChange(currLang)]}</p>
-                            <div>
-                                {arr.tunes.map((p, idx) => <div className="tune" key={idx} onClick={() => this.onUpdate('sound', p)} style={{ backgroundColor: selectedSound?.n === p.n ? '#ff9800' : '#e8eaed' }}>
-                                    {!p.isPlaying && <PlayCircleOutlineIcon onClick={(ev) => this.soundPlay(ev, p.s, true)} />}
-                                    {p.isPlaying && <PauseCircleOutlineIcon onClick={(ev) => this.soundStop(ev, p.s, false)} />}
-                                    <p>{p.n}</p>
-                                </div>)}
-                            </div>
-                        </div>)}
-                    </div>
-
-                    <div style={{ marginBottom: isTimeLevelOn ? 0 : '3%', borderRadius: isTimeLevelOn ? '5px 5px 0 0' : '5px' }}>
-                        <div>
-                            <span><AccessAlarmRoundedIcon /></span>
-                            <p>{lngs["sett-t"][this.lngForChange(currLang)]}</p>
-                        </div>
-                        <ToggleWrapper obj={{ value: isTimeLevelOn, key: 'timeStatus' }} onUpdate={this.onUpdate} />
-                    </div>
-                    <div className={`time-select flex j-between ${isTimeLevelOn ? 'open' : ''}`}>
-                        {timeOps.map((t, idx) => <div key={idx} onClick={() => this.onUpdate('time', t)} style={{ backgroundColor: selectedTime === t ? '#ff9800' : !isOnDesktop ? 'white' : '#151515', boxShadow: selectedTime === t ? '' : '0px 7px 0 #80808014' }}>
-                            <p>{t}</p>
-                        </div>)}
-                    </div>
-
+                <div style={{ marginBottom: isTimeLevelOn ? 0 : '3%', borderRadius: isTimeLevelOn ? '5px 5px 0 0' : '5px' }}>
                     <div>
-                        <div>
-                            <span><LanguageRoundedIcon /></span>
-                            <p>{lngs["sett-lng"][this.lngForChange(currLang)]}</p>
-                        </div>
-                        <select name="languages" onChange={this.onUpdateLang}>
-                            {languages.map((l, idx) => <option key={idx} style={{ backgroundColor: currLang === l ? 'orange' : 'white' }} value={l}>{l}</option>)}
-                        </select>
+                        <span><AccessAlarmRoundedIcon /></span>
+                        <p>{lngs["sett-t"][lngForChange(currLang)]}</p>
                     </div>
+                    <ToggleWrapper obj={{ value: isTimeLevelOn, key: 'timeStatus' }} onUpdate={onUpdate} />
+                </div>
+                <div className={`time-select flex j-between ${isTimeLevelOn ? 'open' : ''}`}>
+                    {timeOps.map((t, idx) => <div key={idx} onClick={() => onUpdate('time', t)} style={{ backgroundColor: selectedTime === t ? '#ff9800' : !isOnDesktop ? 'white' : '#151515', boxShadow: selectedTime === t ? '' : '0px 7px 0 #80808014' }}>
+                        <p>{t}</p>
+                    </div>)}
+                </div>
 
+                <div>
                     <div>
-                        <div>
-                            <span><QuestionAnswerOutlinedIcon /></span>
-                            <p>{lngs["sett-useQ"][this.lngForChange(currLang)]}</p>
-                        </div>
-                        <ToggleWrapper obj={{ value: useQStatus, key: 'useQ' }} onUpdate={this.onUpdate} />
+                        <span><LanguageRoundedIcon /></span>
+                        <p>{lngs["sett-lng"][lngForChange(currLang)]}</p>
                     </div>
+                    <select name="languages" onChange={onUpdateLang}>
+                        {languages.map((l, idx) => <option key={idx} style={{ backgroundColor: currLang === l ? 'orange' : 'white' }} value={l}>{l}</option>)}
+                    </select>
+                </div>
 
-                    <Logout data={data} logout={logout} history={history} />
+                <div>
+                    <div>
+                        <span><QuestionAnswerOutlinedIcon /></span>
+                        <p>{lngs["sett-useQ"][lngForChange(currLang)]}</p>
+                    </div>
+                    <ToggleWrapper obj={{ value: useQStatus, key: 'useQ' }} onUpdate={onUpdate} />
+                </div>
 
-                </section>
-                <Category data={data} onClose={this.onCloseCategory} isOnDesktop={isOnDesktop} className={`category-section ${isCategoryOpen ? 'open' : ''}`} />
-            </React.Fragment >
-        );
-    }
+                <Logout data={data} logout={dispatch(logout)} history={history} />
+
+            </section>
+            <Category data={data} onClose={onCloseCategory} isOnDesktop={isOnDesktop} className={`category-section ${isCategoryOpen ? 'open' : ''}`} />
+        </React.Fragment >
+    );
+
 }
-const mapStateToProps = state => {
-    return {
-        data: state.dataModule.data
-    }
-}
-const mapDispatchToProps = {
-    loadData,
-    updateSound,
-    updateSoundStatus,
-    updateLang,
-    updateTime,
-    updateTimeStatus,
-    updateLevel,
-    updateUseQStatus,
-    updateCountry,
-    logout
-}
-export const Settings = connect(mapStateToProps, mapDispatchToProps)(_Settings)
+
+
 

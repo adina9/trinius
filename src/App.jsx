@@ -1,7 +1,7 @@
 import { Switch, Route, useLocation, HashRouter as Router } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import i18n from "./services/i18next.js"
-import React, { Component } from 'react';
+import React from 'react';
 import Swal from 'sweetalert2'
 
 //cmps:
@@ -18,8 +18,9 @@ import { storageService } from './services/session-storage.js';
 import { AboutMe } from './pages/AboutMe.jsx';
 
 
-function _App(props) {
-  const { data } = props
+export const App = () => {
+
+  const { data } = useSelector(state => state.dataModule)
 
   var { pathname } = useLocation()
 
@@ -35,8 +36,8 @@ function _App(props) {
     var w = window.screen.width
     var h = window.screen.height
 
-    var isMobile = (w < 1000 && h < 500) || (w < 500 && h < 1000) ? true : false
-    var totalCheck = isMobile && w > width ? true : false
+    var isMobile = (w < 1000 && h < 500) || (w < 500 && h < 1000)
+    var totalCheck = isMobile && w > width
 
     if ((width === h && height === w) && isMobile)
 
@@ -44,7 +45,7 @@ function _App(props) {
         title: currUser?.game?.lang === 'English' ? totalCheck ? 'Please Rotate Your Device' : 'Great!' : totalCheck ? 'בבקשה סובב/י את המסך' : 'מצוין',
         icon: totalCheck ? 'warning' : 'success',
         showConfirmButton: false,
-        allowOutsideClick: totalCheck ? false : true,
+        allowOutsideClick: !totalCheck,
         backdrop: '#e8eaed',
         background: '#e8eaed',
         iconColor: totalCheck ? '#ff3737c2' : '#ff955a',
@@ -61,7 +62,7 @@ function _App(props) {
       {pathname !== '/play' && pathname !== "/" && <AppNav />}
       <Router>
         <Switch>
-          <Route path="/me" component={AboutMe}/>
+          <Route path="/me" component={AboutMe} />
           <Route path='/about' component={About} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path='/settings' component={Settings} />
@@ -73,13 +74,4 @@ function _App(props) {
       </Router>
     </div >
   )
-
 }
-const mapStateToProps = state => {
-  return {
-    data: state.dataModule.data
-  }
-}
-export const App = connect(mapStateToProps, null)(_App)
-
-

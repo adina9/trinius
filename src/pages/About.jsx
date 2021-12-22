@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { storageService } from "../services/session-storage";
 
 
-export function About() {
+export const About = () => {
     const { t } = useTranslation()
     var currUser = storageService.load('currUser')
     var lang = currUser ? currUser?.game?.lang : 'English'

@@ -78,7 +78,7 @@
             top: 50%;
             width: calc(100vw - 400px);
             left: 50%;
-            transform: translate(-50%, -50%);
+            @include trans;
         }
         h2 {
             display: none;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
+
 //icons:
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import BookRoundedIcon from '@material-ui/icons/BookRounded';
@@ -214,8 +215,8 @@ class _Adding extends Component {
     txtForDisplay = () => gameService.setAddingTxt(this.state.currUser?.game?.lang)
 
     render() {
-        const { optional, tf, isOptional, isTF, currArray, levels, final, isFinishClicked, isAllCompolete, isLoadingFinal, isInappropriate, isDone, cArr } = this.state
-        const sOrQ = this.props?.game?.lang === 'English' ? currArray === tf ? 'statement' : 'question' : currArray === tf ? 'קביעה' : 'שאלה'
+        const { currUser, optional, tf, isOptional, isTF, currArray, levels, final, isFinishClicked, isAllCompolete, isLoadingFinal, isInappropriate, isDone, cArr } = this.state
+        const sOrQ = currUser?.game?.lang === 'English' ? currArray === tf ? 'statement' : 'question' : currArray === tf ? 'קביעה' : 'שאלה'
         const txt = this.txtForDisplay()
         return (
 
@@ -262,10 +263,10 @@ class _Adding extends Component {
                     </div>
                 </form>
                 <div className={`finish-modal ${isFinishClicked ? 'open' : ''}`} style={window.screen.height < 1000 ? { height: currArray === tf ? '85vw' : '50vh' } : {}}>
-                    <p>{txt.add_the + sOrQ}</p>
+                    <p>{txt.add_the + ' ' + sOrQ}</p>
                     {!isLoadingFinal && !isInappropriate && !isDone && <CloseRoundedIcon onClick={() => this.setState({ isFinishClicked: false, isLoadingFinal: false, isInappropriate: false })} />}
                     <div className="incomplete flex column a-center pa" style={{ display: isAllCompolete ? 'none' : 'flex' }}>
-                        <p>{txt.add_com + sOrQ}</p>
+                        <p>{txt.add_com + ' ' + sOrQ}</p>
                         <img src={incomplete} alt="" />
                     </div>
                     {isAllCompolete && !isLoadingFinal && !isDone && <div>
@@ -285,15 +286,15 @@ class _Adding extends Component {
                     </div>}
                     {isAllCompolete && isLoadingFinal && <div className="loading flex j-center">
                         <LoadCycle width="30%" height="30%" top="30%" />
-                        <small>{`${txt.add_check + sOrQ}. ${txt.add_check_II}`}</small>
+                        <small>{`${txt.add_check + ' ' + sOrQ}. ${txt.add_check_II}`}</small>
                     </div>}
                     {isDone && isInappropriate && <div className="inappropriate">
-                        <p>{txt.add_sorry + sOrQ + txt.add_sorry_II}</p>
+                        <p>{txt.add_sorry + ' ' + sOrQ + ' ' + txt.add_sorry_II}</p>
                         <div className="flex j-center a-center ma" onClick={() => this.setState({ isFinishClicked: false, isDone: false, isAllCompolete: false, isLoadingFinal: false, isInappropriate: false })}>{txt.add_fix}</div>
                     </div>}
                     {isDone && !isInappropriate && <div className="done tac pr">
                         <span>{txt.add_congrats}</span>
-                        {txt.add_the + sOrQ + ' ' + txt.add_congrats_III}
+                        {txt.add_the + ' ' + sOrQ + ' ' + txt.add_congrats_III}
                         <div className="success-checkmark flex j-center pa"><CheckIcon /></div>
                     </div>}
                 </div>

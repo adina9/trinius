@@ -118,16 +118,27 @@ class _Home extends Component {
         if (!nickname) history.push("/")
 
         let { imgsUrl, imgsClr } = this.state
-        imgsUrl = imgsUrl.map(s => s = { src: s, bgClr: imgsClr[Math.floor(Math.random() * 14)] })
+        imgsUrl = imgsUrl.map(s =>
+            s = { src: s, bgClr: imgsClr[Math.floor(Math.random() * 14)] }
+        )
+
         this.setState({
-            nickname: nickname,
-            isSelectImgClicked: image.src.slice(14, 15) === 'u' ? true : false,
+            nickname,
+            isSelectImgClicked: image.src.slice(14, 15) === 'u',
             imgsUrl,
             currCountry: game.country,
             currImg: image,
             currUser
         })
         setTimeout(() => this.setState({ isLoadingImage: false }), 500)
+    }
+
+    importAll = (requires) => {
+        let images = {};
+        requires.keys().forEach((item) => {
+            images[item.replace("./", "")] = item;
+        });
+        return { ...images };
     }
 
     handleChange = ({ target }) => this.setState({ nickname: target.value })
@@ -172,10 +183,10 @@ class _Home extends Component {
         const { currUser, isLoadingImage, imgsUrl, isEditClicked, nickname, currImg, isSelectImgClicked, countryFilter, currCountry, countryClass, isChooseCountryClicked, cc, dc, pc, countriesOpsClass } = this.state
         const { isOnDesktop, data } = this.props
         const { pointsObj, image, game } = currUser
-        var isEn = currUser?.game?.lang === 'English' ? true : false
+        var isEn = currUser?.game?.lang === 'English'
         const countries = this.countriesForDisplay
         const txtObj = this.txtObj(isEn)
-        if (!this.state || !currUser) return <LoadCycle width="30%" height="30%" top="30%"/>
+        if (!this.state || !currUser) return <LoadCycle width="30%" height="30%" top="30%" />
         return (
             <section className="home-container main-layout pf">
                 <div className={countryClass}>
@@ -234,7 +245,7 @@ class _Home extends Component {
                     <span className="uploadFComputer"><PhotoCameraOutlinedIcon onClick={() => this.setState({ isSelectImgClicked: !isSelectImgClicked })} /></span>
                     {!image.src && <img src={avatarSrc} alt="" />}
                     {image.src && <img src={currImg.src} alt="" className="chosen-img" style={{ backgroundColor: currImg.bgClr }} />}
-                    {currUser && <span className="first-letter-avatar flex a-center j-center"><small>{currUser.nickname?.slice(0, 1).toUpperCase()}</small></span>}
+                    {currUser && <span className="first-letter-avatar flex a-center j-center"><small>{nickname?.slice(0, 1).toUpperCase()}</small></span>}
                 </div>}
 
                 <section className="score-section flex j-between a-center pa" style={{ opacity: isChooseCountryClicked ? '0.2' : '1' }}>
@@ -254,7 +265,7 @@ class _Home extends Component {
                         <CloseRoundedIcon onClick={() => this.setState({ isSelectImgClicked: false, className: 'imgs-section grid' })} className="ma" />
                     </header>
                     <div className="options grid pr">
-                        {imgsUrl.map((src, idx) => <div key={idx} onClick={(ev) => this.selectImg(ev, src)} style={{ backgroundColor: src.bgClr }}><img src={src.src} alt="" /></div>)}
+                        {imgsUrl?.map((src, idx) => <div key={idx} onClick={(ev) => this.selectImg(ev, src)} style={{ backgroundColor: src.bgClr }}><img src={src.src} alt="" /></div>)}
                     </div>
                 </section>
             </section>

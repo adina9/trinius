@@ -25,7 +25,7 @@
         letter-spacing: 0.5px;
         left: 50%;
         top: 56%;
-        transform: translate(-50%, -50%);
+        @include trans;
         width: 75vw;
         border-top: 1px solid;
         border-bottom: 1px solid;
@@ -50,7 +50,7 @@
                     position: relative;
                     left: 25%;
                     width: 50%;
-                    transform: translate(-50%, -50%);
+                    @include trans;
                 }
             }
         }
@@ -58,7 +58,7 @@
     .round-status {
         background-color: #00000085;
         left: 50%;
-        transform: translate(-50%, -50%);
+        @include trans;
         top: 72%;
         width: 75vw;
         height: 5vh;
@@ -88,7 +88,7 @@
 
 @media (min-width: 500px) {
     .roundIsFinished {
-        transform: translate(-50%, -50%);
+        @include trans;
         top: -50%;
         left: 50%;
         width: 55%;
@@ -102,7 +102,7 @@
             z-index: 2;
             border-radius: 3px;
             top: 50%;
-            transform: translate(-50%, -50%);
+            @include trans;
             header {
                 display: block;
                 a {
@@ -119,14 +119,13 @@
                 top: 50%;
                 height: 25vh;
                 div {
-                    height: 90%;
                     font-size: large;
                     justify-content: end;
                     img {
                         &:last-of-type {
                             width: 3vw;
-                            left: 3vh;
-                            bottom: 10%;
+                            left: 3.5vh;
+                            bottom: 8%;
                         }
                     }
                     p {

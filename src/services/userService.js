@@ -1,13 +1,7 @@
 import { httpService } from './httpService.js'
 import { storageService } from './session-storage.js'
-// import { storageService } from './storage-service.js'
-
-// const KEY_DATA = 'dataDB'
-
-// var { data } = require('../data/db.json')
 
 export const userService = {
-    // loadUser,
     updateUser,
     updateNickname,
     updateImgSrc,
@@ -18,20 +12,9 @@ export const userService = {
     resetPoints,
     makeId
 }
-// async function loadUser() {
-//     try {
-//         var { data } = await httpService.get('/trinius')
-//         console.log(data);
-//         // if (!data) httpService.post('/trinius', data)
-//         return data.user
-//     } catch (err) {
-//         console.log('err in userService in loadUser:', err);
-//     }
-// }
 
 async function updateUser(data, user) {
     try {
-        console.log('user.game', user.game);
         const userIdx = data.users.findIndex(u => u._id === user._id)
         data.users[userIdx] = user
         const updatedData = { ...data }
@@ -357,11 +340,11 @@ async function createUser(data, newUserLittleObj) {
             }
         }
         storageService.clear()
+        console.log('newUser:', newUser)
         storageService.save('currUser', newUser)
         const newUsers = [...data.users, newUser]
         const updatedData = { ...data, users: newUsers }
         return updatedData
-        // httpService.post('/trinius', updatedData)
     } catch (err) {
         console.log('err in userService in createUser:', err);
     }
@@ -372,14 +355,7 @@ function resetPoints(data, currUser) {
     var index = users.findIndex(user => user._id === currUser._id)
     var { categories, countries } = currUser
     var tempObj = { ...categories, ...countries }
-    // var updatedObj = {
-    //     // ...tempObj.map(c => c = {
-    //     //     "E": 0,
-    //     //     "M": 0,
-    //     //     "H": 0
-    //     // }),
-    //     // fullPoints: 10
-    // }
+
     var updatedObj = {
         categories: {
             nature: {

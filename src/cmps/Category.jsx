@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 //icons:
 import nature from '../assets/imgs/categories/nature-c.png'
@@ -19,36 +19,40 @@ import CloseRoundedIcon from '@material-ui/icons/CloseRounded'
 import { updateCategory } from '../store/actions/gameAction.js'
 import { storageService } from '../services/session-storage';
 
-export const _Category = ({ isOnDesktop, data, onClose, className, updateCategory }) => {
+const categoriesSrc = [nature, geography, animals, personalities, movies, medicine, food, sports, music, science, technology]
+const categoriesNamesEnglish = ['nature', 'geography', 'animals', 'personalities', 'movies', 'medicine', 'food', 'sports', 'music', 'science', 'technology']
+const categoriesNamesHebrew = ['טבע', 'גיאוגרפיה', 'בעלי חיים', 'אנשים', 'סרטים', 'רפואה', 'אוכל', 'ספורט', 'מוזיקה', 'מדע', 'טכנולוגיה']
 
-    const categoriesSrc = [nature, geography, animals, personalities, movies, medicine, food, sports, music, science, technology]
-    const categoriesNamesEnglish = ['nature', 'geography', 'animals', 'personalities', 'movies', 'medicine', 'food', 'sports', 'music', 'science', 'technology']
-    const categoriesNamesHebrew = ['טבע', 'גיאוגרפיה', 'בעלי חיים', 'אנשים', 'סרטים', 'רפואה', 'אוכל', 'ספורט', 'מוזיקה', 'מדע', 'טכנולוגיה']
+export const Category = ({ isOnDesktop, onClose, className }) => {
+
+    const { data } = useSelector(state => state.dataModule)
+    const dispatch = useDispatch()
+
     const [currUser, setCurrUser] = useState({})
-    const [currCategory, setCategory] = useState('')
+    const [currCategory, setCategory] = useState({})
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
         const user = storageService.load('currUser')
-        const { category } = user?.game
+        const category = user?.game?.category
         let categories = categoriesSrc.map((c, idx) => c = { name: categoriesNamesEnglish[idx].toUpperCase(), src: c })
         setCategory(category)
         setCurrUser({ ...user })
         setCategories(categories)
     }, [])
 
-    const selectCategory = async (ev, currCategory) => {
+    const selectCategory = (ev, currCategory) => {
         ev.preventDefault()
         ev.stopPropagation()
         setCategory({ ...currCategory })
-        await updateCategory(data, currUser, currCategory)
+        dispatch(updateCategory(data, currUser, currCategory))
     }
 
     const categoriesForDisplay = () => {
         const lang = currUser?.game?.lang
         let currArr = lang === 'English' ? categoriesNamesEnglish : categoriesNamesHebrew
         var arr = lang === 'English' ? categoriesNamesHebrew : categoriesNamesEnglish
-        var category = currArr[arr.findIndex(c => c === currCategory.name)]
+        var category = currArr[arr.findIndex(c => c === currCategory?.name)]
         return [category, currArr]
     }
     var categoryForDisplay = categoriesForDisplay()[0] ? categoriesForDisplay()[0] : currUser?.game?.category
@@ -65,18 +69,12 @@ export const _Category = ({ isOnDesktop, data, onClose, className, updateCategor
                 </div>
             </header>
             <div className="categories grid">
-                {categories.map((c, idx) => <div onClick={(ev) => selectCategory(ev, c)} key={idx} style={{ fontSize: c.name.length >= 10 ? '14px' : '', backgroundColor: currCategory.name === c.name ? '#ff7629' : !isOnDesktop ? 'white' : '#cacaca', boxShadow: currCategory.name === c.name ? '' : '0px 5px 0 #80808014' }}>
+                {categories?.map((c, idx) => <div onClick={(ev) => selectCategory(ev, c)} key={idx} style={{ fontSize: c?.name?.length >= 10 ? '14px' : '', backgroundColor: currCategory?.name === c?.name ? '#ff7629' : !isOnDesktop ? 'white' : '#cacaca', boxShadow: currCategory?.name === c?.name ? '' : '0px 5px 0 #80808014' }}>
                     <img src={c.src} alt="" />
                     <p>{categoriesForDisplay()[1][idx]}</p>
                 </div>)}
             </div>
         </section>
     );
-
 }
-
-const mapDispatchToProps = {
-    updateCategory
-}
-export const Category = connect(null, mapDispatchToProps)(_Category)
 

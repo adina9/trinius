@@ -85,11 +85,11 @@ class _Playing extends Component {
         if (soundObj.soundStatus) this.playMusic(true)
         this.startRound()
     }
-    
+
     transObjArr = (lang, arr) => {
         var a = arr.map(obj => obj = {
             ...obj,
-            c: gameService.getCForDisplay(obj.c.substr(0, 1) === obj.c.substr(0, 1).toUpperCase() ? false : true, lang, obj.c),
+            c: gameService.getCForDisplay(obj.c.substr(0, 1) !== obj.c.substr(0, 1).toUpperCase(), lang, obj.c),
             object: lang === 'English' ? { ...obj.object } : {
                 ...obj.object,
                 correct_answer: obj.object.incorrect_answers.length > 2 ? obj.object.correct_answer : obj.object.correct_answer === 'True' ? 'נכון' : 'לא נכון',
@@ -208,10 +208,10 @@ class _Playing extends Component {
         let { bgClr } = answers[currAnswerIdx]
         if (answer.txt === correctAns) {
             bgClr = '#47bd47d1'
-            this.setState({ correctCounter: correctCounter + 1, countryQ: objIndex === 10 ? true : false },
+            this.setState({ correctCounter: correctCounter + 1, countryQ: objIndex === 10 },
                 async () => {
                     let objectLocation = this.state.countryQ ? pointsObj.countries : pointsObj.categories
-                    let isCategoryObject = this.state.countryQ ? false : true
+                    let isCategoryObject = !this.state.countryQ
                     await this.props.updatePointsObj(data, currUser, this.calcPointsObj(pointsObj.fullPoints + (this.state.countryQ ? 15 : 10), objectLocation, isCategoryObject))
                 })
         } else {
@@ -227,7 +227,7 @@ class _Playing extends Component {
         answers[currAnswerIdx].bgClr = bgClr
         this.setState({ answers })
 
-        if (objIndex === 10) setTimeout(() => this.setState({ roundIsFinished: true, isCategoryFinished: level.n === 'H' ? true : false }), timeOut + 100)
+        if (objIndex === 10) setTimeout(() => this.setState({ roundIsFinished: true, isCategoryFinished: level.n === 'H' }), timeOut + 100)
         else {
             let objectLocation = objIndex === 9 ? items.countries : items.categories
             let objectName = objIndex === 9 ? currCountry : currCategory.toLowerCase()
@@ -304,7 +304,7 @@ class _Playing extends Component {
 
     get roundFinishObj() {
         var { objIndex, roundIndex, currUser } = this.state
-        var isEn = currUser.game.lang === 'English' ? true : false
+        var isEn = currUser.game.lang === 'English'
 
         if (objIndex === 10) {
             if (roundIndex === 9) return isEn ? {
@@ -343,7 +343,7 @@ class _Playing extends Component {
     }
 
     get indicationClassObj() {
-        var isEn = this.state.currUser.game.lang === 'English' ? true : false
+        var isEn = this.state.currUser.game.lang === 'English'
         var { isSpliced, objIndex } = this.state
         if (isSpliced) var finalObj = { c: objIndex === 10 ? '#e96b3c' : '#937c37', txt: isEn ? 'Your Question' : 'השאלה שלך', status: true }
         else if (objIndex === 10) finalObj = { c: '#6a6a6a', txt: isEn ? 'Country Question' : 'שאלת מדינה', status: false }
@@ -365,7 +365,7 @@ class _Playing extends Component {
         const level = currUser?.game?.level
         const timeObj = currUser?.game?.timeObj
         const lang = currUser?.game?.lang
-        const isOnDesktop = window.screen.height < 800 ? false : true
+        const isOnDesktop = window.screen.height >= 800
         if (!this.state || !currUser) return <LoadCycle width="30%" height="30%" top="30%" />
         return (
             <React.Fragment>

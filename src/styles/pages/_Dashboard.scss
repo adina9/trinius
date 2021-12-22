@@ -11,7 +11,7 @@
             text-align: center;
             width: 80%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            @include trans;
             position: absolute;
         }
         header p {
@@ -63,7 +63,7 @@
         top: 50%;
         left: 50vw;
         height: 90%;
-        transform: translate(-50%, -50%);
+        @include trans;
         .total-points {
             header p {
                 margin: 2%;

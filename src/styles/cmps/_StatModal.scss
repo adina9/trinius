@@ -3,7 +3,7 @@
     top: 10%;
     left: 50%;
     background-color: $bgClr;
-    transform: translate(-50%, -50%);
+    @include trans;
     width: 85%;
     height: 80%;
     padding: 8%;
@@ -44,7 +44,7 @@
         canvas {
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            @include trans;
         }
         p {
             bottom: 5%;
@@ -52,7 +52,7 @@
         .MuiSvgIcon-root {
             left: 3%;
         }
-        div{
+        div {
             top: 5%;
             left: 3%;
         }
