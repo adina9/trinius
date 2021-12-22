@@ -31,7 +31,7 @@ export const Dashboard = ({ history }) => {
     useEffect(() => {
         setNickname(currUser.nickname)
         setPointsObj(currUser.pointsObj)
-        setLang(currUser.game?.lang)
+        setLang(currUser?.game?.lang)
     }, [currUser])
 
     const calculatedWidth = () => (currUser.pointsObj?.fullPoints / (43650 / 100)).toFixed(1)
