@@ -147,9 +147,9 @@ export const Settings = ({ history, children, isOnDesktop }) => {
         setCategory(currUser?.game?.category)
     }, [currUser])
 
-    useEffect(async () => {
+    useEffect(() => {
         const currUser = storageService.load('currUser')
-        await dispatch(loadData())
+        dispatch(loadData())
 
         if (!currUser) return
         const { soundObj, timeObj, lang, level, useQ, country } = currUser?.game
@@ -163,25 +163,25 @@ export const Settings = ({ history, children, isOnDesktop }) => {
         setCurrLang(lang)
         setCurrUser({ ...currUser })
 
-        if (!country) await dispatch(updateCountry(data, currUser, lang === 'English' ? 'Brazil' : 'ברזיל'))
+        if (!country) dispatch(updateCountry(data, currUser, lang === 'English' ? 'Brazil' : 'ברזיל'))
 
         if (!soundObj?.soundStatus) {
             setIsSoundOn(false)
             setSelectedSound(tunesArr[0].tunes[0])
-            await dispatch(updateSound(data, currUser, tunesArr[0].tunes[0]))
-            await dispatch(updateSoundStatus(data, currUser, isSoundOn))
+            dispatch(updateSound(data, currUser, tunesArr[0].tunes[0]))
+            dispatch(updateSoundStatus(data, currUser, isSoundOn))
         } else setSelectedSound(soundObj.sound)
 
         if (!timeObj?.time) {
             setIsTimeLevelOn(false)
             setSelectedTime(60)
-            await dispatch(updateTime(data, currUser, 60))
-            await dispatch(updateTimeStatus(data, currUser, isTimeLevelOn))
+            dispatch(updateTime(data, currUser, 60))
+            dispatch(updateTimeStatus(data, currUser, isTimeLevelOn))
         } else setSelectedTime(timeObj.time)
 
         if (!level) {
             setSelectedLevel(Object.values(levels)[0])
-            await dispatch(dispatch(updateLevel(data, currUser, selectedLevel)))
+            dispatch(dispatch(updateLevel(data, currUser, selectedLevel)))
         } else setSelectedLevel(level)
 
         return () => {
@@ -190,15 +190,15 @@ export const Settings = ({ history, children, isOnDesktop }) => {
         }
     }, [])
 
-    const onUpdateLang = async ({ target }) => {
+    const onUpdateLang = ({ target }) => {
         if (currLang === target.value) return
         else {
-            i18n.changeLanguage(this.lngForChange(target.value))
+            i18n.changeLanguage(lngForChange(target.value))
             const { country, lang } = currUser?.game
-            setCurrLang(target.value, async () => {
-                var currC = gameService.tranCountry(target.value, country)
-                await dispatch(updateLang(data, currUser, currLang, currC))
-            })
+            setCurrLang(target.value)
+            var currC = gameService.tranCountry(target.value, country)
+            dispatch(updateLang(data, currUser, target.value, currC))
+
         }
     }
     const lngForChange = (lng) => lng === 'English' ? 'en' : 'he'
@@ -209,27 +209,27 @@ export const Settings = ({ history, children, isOnDesktop }) => {
         switch (key) {
             case 'soundStatus':
                 setIsSoundOn(value)
-                await dispatch(updateSoundStatus(data, currUser, value))
+                dispatch(updateSoundStatus(data, currUser, value))
                 break
             case 'sound':
                 setSelectedSound(value)
-                await dispatch(updateSound(data, currUser, value))
+                dispatch(updateSound(data, currUser, value))
                 break
             case 'timeStatus':
                 setIsTimeLevelOn(value)
-                await dispatch(updateTimeStatus(data, currUser, value))
+                dispatch(updateTimeStatus(data, currUser, value))
                 break
             case 'time':
                 setSelectedTime(value)
-                await dispatch(updateTime(data, currUser, value))
+                dispatch(updateTime(data, currUser, value))
                 break
             case 'level':
                 setSelectedLevel({ ...value })
-                await dispatch(updateLevel(data, currUser, value))
+                dispatch(updateLevel(data, currUser, value))
                 break
             case 'useQ':
                 setUseQStatus(value)
-                await dispatch(updateUseQStatus(data, currUser, value))
+                dispatch(updateUseQStatus(data, currUser, value))
                 break
             default:
                 break;
@@ -260,7 +260,7 @@ export const Settings = ({ history, children, isOnDesktop }) => {
         checkCurrSound(src, value)
         music.overworld.stop()
     }
- 
+
     return (
         <React.Fragment>
             <section className="settings left-trans">

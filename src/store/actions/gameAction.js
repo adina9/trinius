@@ -52,6 +52,7 @@ export function updateSound(data, currUser, sound) {
 }
 
 export function updateLang(data, currUser, lang, country) {
+    console.log('lang:', lang)
     return async dispatch => {
         try {
             const updatedUser = await gameService.updateLang(currUser, lang, country)
